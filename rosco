@@ -1,0 +1,51 @@
+#!/bin/bash
+
+
+if [ $# -eq 0 ]
+then
+  echo "No arguments supplied"
+  exit
+fi
+if [ $1 = "build" ]; then
+  echo "Building docker image.."
+
+  docker build -t rosco-image . 
+
+  echo "--------------------done--------------------"
+elif [ $1 = "start" ]; then
+  echo "starting docker image.."
+  xhost +local:docker
+  docker start rosco
+  echo "--------------------done--------------------"
+elif [ $1 = "stop" ]; then
+  echo "stoping docker image.."
+  docker stop rosco
+  echo "--------------------done--------------------"
+elif [ $1 = "run" ]; then
+  if docker container ls -a | grep -q rosco; then
+    docker start rosco
+    docker exec -it rosco /bin/zsh 
+  else
+    docker run -it --name rosco -h rosco \
+      --add-host rosco:127.0.0.1 --user ros \
+      --net=host \
+      -w /home/ros/jenny_ros2 \
+      -v /dev/:/dev --privileged --device /dev/dri/ \
+      -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
+      -e TERM="screen-256color" -e DISPLAY=$DISPLAY \
+      -v $HOME/.Xauthority:/home/ros/.Xauthority:ro \
+      rosco-image /bin/zsh
+  fi
+
+elif [ $1 = "attach" ]; then
+  docker exec -it rosco /bin/zsh 
+  echo "--------------------done--------------------"
+elif [ $1 = "remove" ]; then
+  echo "removing rosco"
+  docker stop rosco
+  docker rm rosco
+  docker image rm rosco-image
+  echo "--------------------done--------------------"
+else
+  echo "what?"
+fi
