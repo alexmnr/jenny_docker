@@ -1,8 +1,21 @@
 # Overview
 Docker Image prepared for everything used in jenny_ros2
 
-<!-- START doctoc -->
-<!-- END doctoc -->
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [Limitations](#limitations)
+- [Dependencies](#dependencies)
+- [Build](#build)
+- [Run](#run)
+- [Remove](#remove)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+# Limitations
+- Can't connect to physical device yet
+- GUI might not show up
 
 # Dependencies
 To run this docker container, you need docker (duh)
